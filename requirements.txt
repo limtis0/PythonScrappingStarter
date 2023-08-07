@@ -1,0 +1,9 @@
+selenium
+selenium-wire
+selenium-stealth
+webdriver-manager
+random-user-agent
+requests
+httpx
+asyncio
+tqdm
