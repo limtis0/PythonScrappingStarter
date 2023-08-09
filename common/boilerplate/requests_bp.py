@@ -26,8 +26,8 @@ def create_session(cookies: dict = None) -> requests.Session:
 
 
 def get(
-        session: requests.Session,
         url: str,
+        session: requests.Session = None,
         timeout: float = 10,
         retry_after: float = 5,
         max_retries: int = 3,
@@ -36,7 +36,10 @@ def get(
 
     while retries < max_retries:
         try:
-            response = session.get(url, timeout=timeout, **kwargs)
+            if session:
+                response = session.get(url, timeout=timeout, **kwargs)
+            else:
+                response = requests.get(url, timeout=timeout, **kwargs)
             response.raise_for_status()
             return response
         except requests.exceptions.RequestException as e:

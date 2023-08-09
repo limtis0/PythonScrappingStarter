@@ -23,7 +23,7 @@ def create_client(cookies: dict = None) -> httpx.AsyncClient:
     return async_client
 
 
-async def make_request_with_retries(
+async def get(
         client: httpx.AsyncClient,
         url: str,
         timeout: float = 10,

@@ -1,9 +1,8 @@
 import os
 from pathlib import Path
-
 from typing import Union
-
-from seleniumwire import webdriver
+from selenium import webdriver
+from seleniumwire import webdriver as wire_webdriver
 from seleniumwire.webdriver import Chrome
 from selenium_stealth import stealth
 from selenium.webdriver.chrome.service import Service
@@ -11,6 +10,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 
 def create_selenium(
+        selenium_wire: bool = True,
         apply_stealth: bool = True,
         executable_path: Union[str, bytes, os.PathLike] = None,
         download_path: Union[str, bytes, os.PathLike] = None) -> Chrome:
@@ -34,7 +34,10 @@ def create_selenium(
     else:
         service = Service(ChromeDriverManager().install())
 
-    driver = webdriver.Chrome(options=options, service=service)
+    if selenium_wire:
+        driver = wire_webdriver.Chrome(options=options, service=service)
+    else:
+        driver = webdriver.Chrome(options=options, service=service)
 
     if apply_stealth:
         stealth(driver,
