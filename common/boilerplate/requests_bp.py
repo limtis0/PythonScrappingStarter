@@ -20,7 +20,8 @@ def create_session(cookies: dict = None) -> requests.Session:
     }
 
     session.headers.update(headers)
-    session.cookies.update(cookies)
+    if cookies:
+        session.cookies.update(cookies)
 
     return session
 
