@@ -1,12 +1,12 @@
 import asyncio
-from tqdm import tqdm
+from tqdm.asyncio import tqdm
 
 
-def complete_async_tasks(tasks, desc: str):
-    with tqdm(total=len(tasks), desc=desc) as pbar:
-        responses = []
-        for task in asyncio.as_completed(tasks):
-            response = await task
-            if response is not None:
-                responses.append(response)
-            pbar.update()
+async def gather_with_concurrency(n_workers: int, *coroutines):
+    semaphore = asyncio.Semaphore(n_workers)
+
+    async def semaphore_coroutine(coroutine):
+        async with semaphore:
+            return await coroutine
+
+    return await tqdm.gather(*(semaphore_coroutine(c) for c in coroutines))
