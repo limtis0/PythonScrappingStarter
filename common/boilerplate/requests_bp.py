@@ -32,6 +32,7 @@ def get(
         timeout: float = 10,
         retry_after: float = 5,
         max_retries: int = 3,
+        verbose: bool = False,
         **kwargs) -> requests.Response:
     retries = 0
 
@@ -44,7 +45,8 @@ def get(
             response.raise_for_status()
             return response
         except requests.exceptions.RequestException as e:
-            print(f"Error getting {url}: {e}")
+            if verbose:
+                print(f"Error getting {url}: {e}")
             time.sleep(retry_after)
             retries += 1
 
