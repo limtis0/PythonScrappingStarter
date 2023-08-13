@@ -38,9 +38,9 @@ async def get(
             response = await client.get(url, timeout=timeout, **kwargs)
             response.raise_for_status()
             return response
-        except httpx.RequestError as e:
+        except (httpx.RequestError, httpx.HTTPStatusError) as e:
             if verbose:
-                print(f"Error getting {url}: {e}")
+                print(f"Error getting {url}, retrying in {retry_after} seconds: {e}")
             await asyncio.sleep(retry_after)
             retries += 1
 
