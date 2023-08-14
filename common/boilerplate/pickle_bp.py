@@ -9,8 +9,10 @@ def dump(data: Any, path: Union[str, bytes, os.PathLike]) -> None:
 
 
 def load(path: Union[str, bytes, os.PathLike], default=None):
-    if default and not os.path.exists(path):
-        return default
+    if not os.path.exists(path):
+        if default is not None:
+            return default
+        raise OSError(f'Directory {path} can not be found.')
 
     with open(path, 'rb') as file:
         return pickle.load(file)
